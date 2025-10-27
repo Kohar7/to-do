@@ -18,7 +18,7 @@ import {
   Divider, 
   Badge, 
   Avatar, 
-  useMediaQuery,
+  // useMediaQuery,
   Button
 } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -31,11 +31,9 @@ import {
   Person as PersonIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
-  // Add as AddIcon,  // Not used in this file
-  Notifications as NotificationsIcon,
-  // AccountCircle as AccountCircleIcon
+  Notifications as NotificationsIcon
 } from '@mui/icons-material';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import TodoList from './components/TodoList';
 import AddTodo from './components/AddTodo';
 import Profile from './components/Profile';
@@ -84,7 +82,6 @@ const queryClient = new QueryClient();
 
 const TodoApp = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -93,8 +90,9 @@ const TodoApp = () => {
   };
 
   const handleNavigation = (path: string) => {
-    navigate(path);
-    if (isMobile) {
+    const hashPath = path.startsWith('/') ? path : `/${path}`;
+    navigate(hashPath);
+    if (mobileOpen) {
       setMobileOpen(false);
     }
   };
@@ -127,17 +125,17 @@ const TodoApp = () => {
                 },
                 borderRadius: 1,
                 mb: 0.5,
-                backgroundColor: location.pathname === item.path ? 'action.selected' : 'transparent',
+                backgroundColor: location.hash === `#${item.path}` ? 'action.selected' : 'transparent',
               }}
             >
               <ListItemButton onClick={() => handleNavigation(item.path)}>
-                <ListItemIcon sx={{ color: location.pathname === item.path ? 'primary.main' : 'inherit' }}>
+                <ListItemIcon sx={{ color: location.hash === `#${item.path}` ? 'primary.main' : 'inherit' }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText 
                   primary={item.text} 
                   primaryTypographyProps={{
-                    fontWeight: location.pathname === item.path ? 'medium' : 'regular',
+                    fontWeight: location.hash === `#${item.path}` ? 'medium' : 'regular',
                   }}
                 />
               </ListItemButton>
@@ -149,7 +147,9 @@ const TodoApp = () => {
       <Box sx={{ mt: 'auto', borderTop: '1px solid', borderColor: 'divider' }}>
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => handleNavigation('/profile')}>
+            <ListItemButton
+              selected={location.hash === '#/profile'}
+              onClick={() => handleNavigation('/profile')}>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
@@ -198,18 +198,20 @@ const TodoApp = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {location.pathname === '/profile' ? 'My Profile' : 'Task Dashboard'}
+            {location.hash === '#/profile' ? 'My Profile' : 'Task Dashboard'}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={3} color="error">
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit" onClick={() => handleNavigation('/profile')}>
+          <ListItemButton
+            selected={location.hash === '#/profile'}
+            onClick={() => handleNavigation('/profile')}>
             <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
               <PersonIcon fontSize="small" />
             </Avatar>
-          </IconButton>
+          </ListItemButton>
         </Toolbar>
       </AppBar>
       <Box

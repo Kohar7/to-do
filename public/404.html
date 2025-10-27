@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // Check the current URL and redirect to the main app with the path
+      const path = window.location.pathname;
+      const search = window.location.search;
+      const hash = window.location.hash;
+      window.location.href = `https://kohar7.github.io/to-do/index.html${path}${search}${hash}`;
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to the application...</p>
+  </body>
+</html>
