@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   ThemeProvider, 
   createTheme, 
@@ -31,9 +31,9 @@ import {
   Person as PersonIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
-  Add as AddIcon,
+  // Add as AddIcon,  // Not used in this file
   Notifications as NotificationsIcon,
-  AccountCircle as AccountCircleIcon
+  // AccountCircle as AccountCircleIcon
 } from '@mui/icons-material';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import TodoList from './components/TodoList';

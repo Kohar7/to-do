@@ -27,7 +27,7 @@ const AddTodo = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [dueDate, setDueDate] = useState<Date | null>(null);
-  // Add type for the date picker's onChange handler
+  // Handle date change from date picker
   const handleDateChange = (newValue: Date | null) => {
     setDueDate(newValue);
   };
@@ -228,7 +228,7 @@ const AddTodo = () => {
                 <DatePicker
                   label="Due Date"
                   value={dueDate}
-                  onChange={(newValue) => setDueDate(newValue)}
+                  onChange={handleDateChange}
                   slotProps={{
                     textField: {
                       fullWidth: true,
